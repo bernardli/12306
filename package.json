@@ -1,0 +1,23 @@
+{
+  "name": "12306",
+  "version": "1.0.0",
+  "description": "余票提醒",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bernardli/12306.git"
+  },
+  "author": "BernardLi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bernardli/12306/issues"
+  },
+  "homepage": "https://github.com/bernardli/12306#readme",
+  "dependencies": {
+    "nodemailer": "^4.4.2",
+    "superagent": "^3.8.2"
+  }
+}

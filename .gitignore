@@ -1,6 +1,10 @@
+# config
+config/config.js
+
 # Logs
 logs
 *.log
+.vscode
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
