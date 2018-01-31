@@ -33,3 +33,7 @@ module.exports = {
 ```
 ##### PS: `mailOptions`中一般来讲只要修改`from`和`to`就行了, `sebject`和`html`会自动生成, 如果嫌发送的邮件样式太难看, 可以自行修改源代码
 
+运行程序
+```bash
+$ npm start
+```
