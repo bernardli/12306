@@ -1,8 +1,8 @@
 const superagent = require('superagent')
 const nodemailer = require('nodemailer')
 const config = require('./config/config')
+const stationName = require('./station_name')
 const transporter = nodemailer.createTransport(config.transporter);
-
 /**
  * @description 延时函数,返回一个指定时间后resolve的promise
  * @param {number} time 延迟时间, 单位ms
@@ -82,6 +82,7 @@ function hasLeftTicket(seatTypes, tickets) {
 function sendMail(trains) {
   let mailOptions = Object.assign({}, config.mailOptions)
   mailOptions.html = template(trains)
+  mailOptions.subject = `${config.ticket.date}: ${config.ticket.from} -=> ${config.ticket.to}`
   console.log('尝试发送邮件...')
   return new Promise((rel, rej) => {
     transporter.sendMail(mailOptions, (error, info) => {
@@ -103,8 +104,8 @@ function request() {
     .get('https://kyfw.12306.cn/otn/leftTicket/queryZ')
     .query({
       'leftTicketDTO.train_date': config.ticket.date,
-      'leftTicketDTO.from_station': arrayRandom(config.ticket.from), // GZQ IZQ GBQ GXQ GGQ
-      'leftTicketDTO.to_station': arrayRandom(config.ticket.to), // BJP VNP VAP BOP BXP
+      'leftTicketDTO.from_station': stationName[config.ticket.from],
+      'leftTicketDTO.to_station': stationName[config.ticket.to],
       'purpose_codes': config.ticket.purposeCodes
     })
     .timeout(8000)
@@ -130,7 +131,7 @@ function filter(res) {
   if (trains.length !== 0) {
     return trains
   } else {
-    throw { code: 'NOTICKET', message: '没有票QAQ' }
+    throw { code: 'NOTICKET', message: `${config.ticket.date} ${config.ticket.from} -> ${config.ticket.to}: 没有票QAQ` }
   }
 }
 /**
@@ -141,6 +142,7 @@ async function run() {
     try {
       let res = await Promise.all([sleep(5000), request()]).then(values => { return values[1] })
       let trains = filter(res)
+      console.log(`${config.ticket.date} ${config.ticket.from} -> ${config.ticket.to}: 监控席别有票!`)
       await sendMail(trains)
       console.log('邮件发送成功! 15分钟后继续查询')
       await sleep(1000 * 60 * 15)
