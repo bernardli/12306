@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/bernardli/12306#readme",
   "dependencies": {
-    "nodemailer": "^4.4.2",
+    "nodemailer": "^6.4.16",
     "superagent": "^3.8.2"
   }
 }
